@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Радиоактивная кнопка</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Контейнер для кнопки, который мы будем скрывать */
+        #main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sound-button {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 12px solid #222;
+            background-image: url('Кнопка.png'); 
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            transition: transform 0.05s;
+            outline: none;
+        }
+
+        .sound-button:active {
+            transform: scale(0.92);
+        }
+
+        /* Стили для полноэкранного изображения */
+        #popup-image {
+            display: none; /* Скрыто по умолчанию */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain; /* Картинка впишется в экран без искажений */
+            background-color: black; /* Фон за картинкой станет черным */
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-content">
+        <button class="sound-button" onclick="activateMeme()"></button>
+    </div>
+
+    <img id="popup-image" src="Картинка.png" alt="Мем">
+
+    <audio id="meme-sound" src="планктон ааа мем.mp3"></audio>
+
+    <script>
+        function activateMeme() {
+            const audio = document.getElementById('meme-sound');
+            const img = document.getElementById('popup-image');
+            const content = document.getElementById('main-content');
+
+            // 1. Прячем кнопку и фон
+            content.style.display = 'none';
+
+            // 2. Показываем картинку
+            img.style.display = 'block';
+
+            // 3. Запускаем звук
+            audio.currentTime = 0; 
+            audio.play().catch(e => console.log("Ошибка:", e));
+
+            // 4. Когда звук закончится, всё вернется назад
+            audio.onended = function() {
+                img.style.display = 'none';
+                content.style.display = 'flex';
+            };
+        }
+    </script>
+
+</body>
+</html>
